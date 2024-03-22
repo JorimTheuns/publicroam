@@ -1,0 +1,128 @@
+.answer-card,
+.cluster-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  /* border-radius: 8px; */
+  overflow: hidden; /* Ensures images and content do not spill out of the card's rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds subtle shadow for depth */
+  margin: auto;
+  background-color: white;
+  /* add scroll snap to align to the top of the object */
+  scroll-snap-align: start;
+}
+
+.answer-content {
+  padding: 50px; /* Adjust as needed */
+}
+
+.answer-images {
+  /* padding: 20px; Adjust as needed */
+  display: flex;
+  flex-direction: column;
+}
+
+.small {
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.answer-content h2,
+.answer-content h3 {
+  margin: 20px 0; /* Space between headings and paragraphs */
+}
+
+.answer-content p {
+  line-height: 1.6; /* Improves readability */
+  margin-bottom: 6px;
+}
+
+.answer-content > p.meta {
+  font-size: 14px;
+}
+
+.answer-content p strong {
+  font-weight: 600; /* Emphasizes the "Argument" */
+}
+
+.answer-images img {
+  width: 100%; /* Stretches the images to fill their container */
+  max-height: 100%; /* Keeps the image aspect ratio intact */
+  display: block; /* Removes default inline image spacing */
+  object-fit: cover; /* Optional: stretches images to fill their container */
+}
+
+/* Typography hierarchy */
+.answer-content h2 {
+  font-size: 36px; /* Primary Heading Size */
+  font-weight: 600; /* Adjust based on preference */
+}
+
+.answer-content h3 {
+  font-size: 24px; /* Secondary Heading Size */
+  font-weight: 500;
+}
+
+.answer-content p {
+  font-size: 20px; /* Paragraph Size */
+}
+
+.tiny-card {
+  padding: 8px;
+  font-size: 14px;
+}
+
+.tiny-card:hover {
+  background-color: #f0f0f0;
+}
+.tiny-card h3,
+p {
+  font-size: 14px;
+  margin: 0;
+}
+
+ul {
+  padding-left: 20px; /* Standard indentation for list */
+}
+
+ul li {
+  line-height: 1.6; /* Matching paragraph line heights */
+  font-size: 14px; /* Secondary Heading Size */
+}
+
+.right {
+  position: fixed;
+  z-index: 1;
+  left: 50vw;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  overflow-y: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  overflow-x: hidden;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 1000px) {
+  .right {
+    width: 100%;
+    left: 0;
+  }
+
+  .answer-card {
+    grid-template-columns: 1fr; /* Stacks content and images on smaller screens */
+    min-width: 0; /* Allows the card to adjust to smaller viewport widths */
+    max-width: 1000px;
+  }
+  .answer-content {
+    padding: 14px; /* Adjust as needed */
+  }
+  .answer-content h2 {
+    font-size: 24px; /* Primary Heading Size */
+  }
+  .answer-content h3 {
+    font-size: 18px; /* Primary Heading Size */
+  }
+  .answer-content p {
+    font-size: 14px; /* Primary Heading Size */
+  }
+}

@@ -1,0 +1,131 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
+
+.app {
+  margin: 0 auto;
+  padding: 50px;
+  background-color: lightgray;
+  font-family: "Space Grotesk", sans-serif;
+}
+.description {
+  margin-bottom: 40px;
+}
+
+h2,
+h3,
+h4,
+ul,
+p {
+  max-width: 1000px;
+}
+.logo {
+  max-height: 40px;
+}
+.footer {
+  margin-top: 30vh;
+  max-width: 1000px;
+}
+.description h1 {
+  margin-top: 30vh;
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+.description h2 {
+  margin-top: 15vh;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+.description h3 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.answer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.tiny-card {
+  cursor: pointer;
+  border: 2px solid #ccc;
+  text-align: center;
+}
+
+.tiny-card img {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.tiny-card h3 {
+  padding: 4px;
+}
+
+.modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  overflow-y: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  overflow-x: hidden;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  border: 1px solid #888;
+  width: 100%;
+}
+
+.close {
+  color: #aaa;
+  float: left;
+  font-size: 48px;
+  font-weight: bold;
+  cursor: pointer;
+  position: fixed;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* mobile */
+@media (max-width: 1000px) {
+  .modal {
+    width: 100%;
+    left: 0;
+  }
+  .app {
+    padding: 10px;
+  }
+  .description h1 {
+    font-size: 2.5rem;
+  }
+  .description h2 {
+    font-size: 1.5rem;
+  }
+  .description h3 {
+    margin-top: 2px;
+    font-size: 1rem;
+  }
+  .answer-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  .tiny-card {
+    /* testing */
+  }
+  .tiny-card img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  .modal-content {
+    width: 100%;
+  }
+}
