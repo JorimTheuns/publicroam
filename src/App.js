@@ -44,7 +44,8 @@ const App = () => {
       <img src={ClientLogo} className="logo" alt="client-logo" />
       <div className="description">
         <h1>{data.host}</h1>
-        <h3>{data.description}</h3>
+        <h3>{data.context}</h3>
+        <h4>{data.description}</h4>
       </div>
       {data.sessions.map((session, sessionIndex) => (
         <div key={sessionIndex}>
@@ -53,7 +54,6 @@ const App = () => {
               <div className="description">
                 <h2>{question.question.short}</h2>
                 <h3>{question.question.sub}</h3>
-                <p>{question.question.context}</p>
               </div>
               <div className="answer-grid">
                 {question.clusters.map((cluster, clusterIndex) =>
