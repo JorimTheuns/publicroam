@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import data from "./clustered-data.json"
 import ClusterCard from "./components/ClusterCard"
 import "./App.css"
-import TUELogo from "./tue-logo.png"
+import ClientLogo from "./machines-for-good-logo.png"
 import Logo from "./dembrane-logo.png"
 
 const App = () => {
@@ -41,7 +41,7 @@ const App = () => {
 
   return (
     <div className="app">
-      <img src={TUELogo} className="logo" alt="tue-logo" />
+      <img src={ClientLogo} className="logo" alt="client-logo" />
       <div className="description">
         <h1>{data.host}</h1>
         <h3>{data.description}</h3>
@@ -111,9 +111,8 @@ const App = () => {
         <ul>
           <li>
             <strong>Traceability:</strong> Many conclusions can be traced to
-            direct quotes from the transcripts of the conversations recorded
-            during the meeting. We have not published the full transcripts that
-            lead to this report.
+            direct quotes from the transcripts of the recordings. We have not
+            published the full transcripts that lead to this report.
           </li>
           <li>
             <strong>Reproducibility:</strong> The findings in this report have
@@ -122,8 +121,8 @@ const App = () => {
           <li>
             <strong>Representativeness:</strong> The findings in this report are
             not representative of the opinions of anyone other than the
-            participants who attended the community meeting, and have not been
-            tested for accuracy.
+            participants who attended the workshop, and have not been tested for
+            accuracy.
           </li>
         </ul>
       </div>

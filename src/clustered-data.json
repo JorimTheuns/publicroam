@@ -1,8 +1,8 @@
 {
   "lang": "en",
-  "host": "FGTU/e - Community Meeting",
-  "participants": "Intern",
-  "description": "The Future Governance TU/e (FGTU/e) working group recently conducted a community meeting to gather input regarding potential changes to the governance structure of the TU/e. The following is an interactive report of both the Dutch and English breakout sessions. addressing key questions from the working group to the community. For each research question, the most shared ideas are grouped as clickable cards. When a card is clicked all mentioned answers that support the idea are shown. Behind each answer an description is provided with quotes that support the answer.",
+  "host": "Machines for Good workshop",
+  "participants": "External",
+  "description": "'Machines for Good' is a project under the EU's CERV program, launched by Baltan Laboratories, FZC, Ohme, and Sineglossa, exploring AI's role in fostering inclusive, democratic societies. It aims to engage youngsters through AI-infused art workshops across Italy, Belgium, the Netherlands, and Spain, focusing on technology's intersection with sustainability, democracy, climate change, and community. These workshops will generate guidelines for policy recommendations, aiming to enhance awareness and participation in AI among adolescents, young people, and policy stakeholders. The project encapsulates the EU's vision of nurturing open, rights-based societies through innovative and participatory uses of technology.",
   "sessions": [
     {
       "session_name": "Session 1",
