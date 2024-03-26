@@ -41,14 +41,19 @@ p {
 
 .answer-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 16px;
+  align-items: stretch;
 }
 
 .tiny-card {
   cursor: pointer;
   border: 2px solid #ccc;
   text-align: center;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  transition: 0.3s;
 }
 
 .tiny-card img {
@@ -115,15 +120,20 @@ p {
     font-size: 1rem;
   }
   .answer-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
-  .tiny-card {
+  .tiny-cluster-card {
     /* testing */
+    padding: 8px;
+    flex-direction: row;
+    gap: 8px;
+    text-align: left;
   }
-  .tiny-card img {
+  .tiny-cluster-card img {
     width: 100%;
     height: auto;
-    margin-bottom: 10px;
+    margin-bottom: 0;
+    max-width: 100px;
   }
   .modal-content {
     width: 100%;

@@ -11,6 +11,34 @@
   scroll-snap-align: start;
 }
 
+.tag {
+  position: absolute;
+  padding: 4px;
+  font-size: 14px;
+  border-bottom-right-radius: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin: auto;
+  margin-bottom: 4px;
+  width: fit-content;
+}
+
+.pill {
+  border-radius: 20px;
+  padding: 4px 8px;
+  font-size: 14px;
+  margin: auto;
+  margin-bottom: 12px;
+  width: fit-content;
+}
+
+.top {
+  background-color: #a8feff;
+}
+.fresh {
+  background-color: #b7feb9;
+}
+
 .answer-content {
   padding: 50px; /* Adjust as needed */
 }
@@ -67,8 +95,14 @@
 }
 
 .tiny-card {
-  padding: 8px;
+  padding: 0px;
+  padding-bottom: 8px;
   font-size: 14px;
+  position: relative;
+}
+
+.tiny-answer-card {
+  padding: 16px;
 }
 
 .tiny-card:hover {
@@ -76,7 +110,7 @@
 }
 .tiny-card h3,
 p {
-  font-size: 14px;
+  font-size: 16px;
   margin: 0;
 }
 
@@ -86,7 +120,7 @@ ul {
 
 ul li {
   line-height: 1.6; /* Matching paragraph line heights */
-  font-size: 14px; /* Secondary Heading Size */
+  font-size: 16px; /* Secondary Heading Size */
 }
 
 .right {

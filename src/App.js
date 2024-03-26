@@ -5,6 +5,57 @@ import "./App.css"
 import ClientLogo from "./machines-for-good-logo.png"
 import Logo from "./dembrane-logo.png"
 
+// Calculate inverseEvidence for each answer and cluster
+data.sessions.forEach((session) => {
+  session.questions.forEach((question) => {
+    question.tables.forEach((table) => {
+      table.answers.forEach((answer) => {
+        answer.inverseEvidence = answer.topEvidence + answer.evidenceSpread
+      })
+    })
+
+    question.clusters.forEach((cluster) => {
+      const referencedAnswers = question.tables.flatMap((table) =>
+        table.answers.filter((answer) =>
+          cluster.answers_referenced.includes(answer.id)
+        )
+      )
+      const totalInverseEvidence = referencedAnswers.reduce(
+        (sum, answer) => sum + answer.inverseEvidence,
+        0
+      )
+      cluster.inverseEvidenceMean =
+        totalInverseEvidence / referencedAnswers.length
+      const inverseEvidences = referencedAnswers.map(
+        (answer) => answer.inverseEvidence
+      )
+      const minEvidence = Math.min(...inverseEvidences)
+      const maxEvidence = Math.max(...inverseEvidences)
+      cluster.minInverseEvidence = minEvidence
+      cluster.inverseEvidenceSpread = minEvidence + (maxEvidence - minEvidence)
+    })
+
+    // Calculate the mean and standard deviation of inverseEvidence for the question's clusters
+    const inverseEvidences = question.clusters.map(
+      (cluster) => cluster.inverseEvidenceMean
+    )
+    const mean =
+      inverseEvidences.reduce((sum, value) => sum + value, 0) /
+      inverseEvidences.length
+    const stdDev = Math.sqrt(
+      inverseEvidences.reduce(
+        (sum, value) => sum + Math.pow(value - mean, 2),
+        0
+      ) / inverseEvidences.length
+    )
+
+    question.clusters.forEach((cluster) => {
+      // Calculate the z-score for the cluster's inverseEvidence
+      cluster.zScore = (cluster.inverseEvidenceMean - mean) / stdDev
+    })
+  })
+})
+
 const App = () => {
   const [selectedCluster, setSelectedCluster] = useState(null)
 
@@ -56,28 +107,35 @@ const App = () => {
                 <h3>{question.question.sub}</h3>
               </div>
               <div className="answer-grid">
-                {question.clusters.map((cluster, clusterIndex) =>
-                  cluster &&
-                  cluster.images &&
-                  cluster.images.length > 0 &&
-                  cluster.name ? (
-                    <div
-                      key={`${clusterIndex}`}
-                      className="tiny-card"
-                      onClick={() =>
-                        handleClusterClick(
-                          question.question.short,
-                          cluster,
-                          sessionIndex,
-                          questionIndex
-                        )
-                      }
-                    >
-                      <img src={cluster.images[0]} alt={cluster.title} />
-                      <h3>{cluster.name}</h3>
-                    </div>
-                  ) : null
-                )}
+                {[...question.clusters]
+                  .sort((a, b) => a.inverseEvidenceMean - b.inverseEvidenceMean)
+                  .map((cluster, clusterIndex) =>
+                    cluster &&
+                    cluster.images &&
+                    cluster.images.length > 0 &&
+                    cluster.name ? (
+                      <div
+                        key={`${clusterIndex}`}
+                        className="tiny-card"
+                        onClick={() =>
+                          handleClusterClick(
+                            question.question.short,
+                            cluster,
+                            sessionIndex,
+                            questionIndex
+                          )
+                        }
+                      >
+                        <img src={cluster.images[0]} alt={cluster.title} />
+                        <h3>{cluster.name}</h3>
+                        {cluster.zScore < -1 ? (
+                          <div className="tag top">Top Answer</div>
+                        ) : cluster.zScore > 1 ? (
+                          <div className="tag fresh">Fresh perspective</div>
+                        ) : null}
+                      </div>
+                    ) : null
+                  )}
               </div>
             </div>
           ))}

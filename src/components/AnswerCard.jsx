@@ -9,7 +9,6 @@ const AnswerCard = ({ question, answer }) => {
       {" "}
       <div className="answer-content">
         <h2>{answer.title}</h2>
-        <p>{answer.story}</p>
         <p>{answer.argument}</p> <h3>Relevant Quotes:</h3>{" "}
         <ul>
           {" "}
