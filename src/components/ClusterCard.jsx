@@ -50,7 +50,7 @@ const ClusterCard = ({ question, cluster, referencedAnswers }) => {
           {question}
         </p>
         <p>{cluster.description}</p>
-        <h3>Answers Referenced</h3>
+        <h3>Antwoorden per transcript</h3>
         <div className="answer-grid">
           {sortedAnswers.map((reference, index) =>
             reference && reference.title ? (
@@ -60,23 +60,18 @@ const ClusterCard = ({ question, cluster, referencedAnswers }) => {
                 onClick={() => handleAnswerClick(reference)}
               >
                 {reference.zScore < -1 ? (
-                  <div className="top pill">Top Answer</div>
+                  <div className="top pill">Top Antwoord</div>
                 ) : reference.zScore > 1 ? (
-                  <div className="fresh pill">Fresh perspective</div>
+                  <div className="fresh pill">Frisse blik</div>
                 ) : null}
                 <strong>
-                  <p>{reference.title}</p>
+                  <p>{reference.answer}</p>
                 </strong>
-                <p>{reference.id}</p>
+                <small>{reference.id}</small>
               </div>
             ) : null
           )}
         </div>
-      </div>
-      <div className="answer-images">
-        {cluster.images.map((imagePath, index) => (
-          <img key={index} src={imagePath} alt={imagePath} />
-        ))}
       </div>
       {selectedAnswer && (
         <div className="right">

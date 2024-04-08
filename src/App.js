@@ -1,9 +1,18 @@
 import React, { useState } from "react"
 import data from "./clustered-data.json"
-import ClusterCard from "./components/ClusterCard"
+import AnswerCard from "./components/AnswerCard"
 import "./App.css"
-import ClientLogo from "./machines-for-good-logo.png"
+import ClientLogo from "./publicroam.png"
 import Logo from "./dembrane-logo.png"
+import LoginForm from "./components/LoginForm"
+
+const valenceColors = {
+  "Zeer positief": "#b7feb9",
+  Positief: "#b7feb9",
+  Neutraal: "#a8feff",
+  Gemengd: "#a8feff",
+  Negatief: "#feb1fe",
+}
 
 // Calculate inverseEvidence for each answer and cluster
 data.sessions.forEach((session) => {
@@ -14,31 +23,11 @@ data.sessions.forEach((session) => {
       })
     })
 
-    question.clusters.forEach((cluster) => {
-      const referencedAnswers = question.tables.flatMap((table) =>
-        table.answers.filter((answer) =>
-          cluster.answers_referenced.includes(answer.id)
-        )
-      )
-      const totalInverseEvidence = referencedAnswers.reduce(
-        (sum, answer) => sum + answer.inverseEvidence,
-        0
-      )
-      cluster.inverseEvidenceMean =
-        totalInverseEvidence / referencedAnswers.length
-      const inverseEvidences = referencedAnswers.map(
-        (answer) => answer.inverseEvidence
-      )
-      const minEvidence = Math.min(...inverseEvidences)
-      const maxEvidence = Math.max(...inverseEvidences)
-      cluster.minInverseEvidence = minEvidence
-      cluster.inverseEvidenceSpread = minEvidence + (maxEvidence - minEvidence)
-    })
+    // Flatten the answers array
+    const allAnswers = question.tables.flatMap((table) => table.answers)
 
-    // Calculate the mean and standard deviation of inverseEvidence for the question's clusters
-    const inverseEvidences = question.clusters.map(
-      (cluster) => cluster.inverseEvidenceMean
-    )
+    // Calculate the mean and standard deviation of inverseEvidence for all answers
+    const inverseEvidences = allAnswers.map((answer) => answer.inverseEvidence)
     const mean =
       inverseEvidences.reduce((sum, value) => sum + value, 0) /
       inverseEvidences.length
@@ -49,44 +38,34 @@ data.sessions.forEach((session) => {
       ) / inverseEvidences.length
     )
 
-    question.clusters.forEach((cluster) => {
-      // Calculate the z-score for the cluster's inverseEvidence
-      cluster.zScore = (cluster.inverseEvidenceMean - mean) / stdDev
+    // Calculate the z-score for each answer's inverseEvidence
+    allAnswers.forEach((answer) => {
+      answer.zScore = (answer.inverseEvidence - mean) / stdDev
     })
   })
 })
 
 const App = () => {
-  const [selectedCluster, setSelectedCluster] = useState(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [selectedAnswer, setSelectedAnswer] = useState(null)
 
-  const handleClusterClick = (
-    questionShort,
-    cluster,
-    sessionIndex,
-    questionIndex
-  ) => {
-    // Find the parent session and question based on their indices
-    const parentSession = data.sessions[sessionIndex]
-    const parentQuestion = parentSession.questions[questionIndex]
+  const handleLogin = async (username, password) => {
+    // Replace with your own authentication logic
+    if (username === "dembrane" && password === "dembrane2024!") {
+      setIsAuthenticated(true)
+    } else {
+      throw new Error("Invalid username or password")
+    }
+  }
 
-    // Initialize an array to hold the referenced answers
-    let referencedAnswers = []
+  if (!isAuthenticated) {
+    return <LoginForm onLogin={handleLogin} />
+  }
 
-    // Iterate through each table in the parent question
-    parentQuestion.tables.forEach((table) => {
-      // Filter the answers that are referenced by the cluster
-      const filteredAnswers = table.answers.filter((answer) =>
-        cluster.answers_referenced.includes(answer.id)
-      )
-      // Concatenate the filtered answers to the referencedAnswers array
-      referencedAnswers = [...referencedAnswers, ...filteredAnswers]
-    })
-
-    // Set the selected cluster state with the question, cluster, and referenced answers
-    setSelectedCluster({
+  const handleAnswerClick = (questionShort, answer) => {
+    setSelectedAnswer({
       question: questionShort,
-      cluster,
-      referencedAnswers, // Include the referenced answers in the state
+      answer,
     })
   }
 
@@ -97,41 +76,45 @@ const App = () => {
         <h1>{data.host}</h1>
         <h3>{data.context}</h3>
         <h4>{data.description}</h4>
+        <h3 style={{ marginTop: 10 + "vh" }}>
+          Organisaties zien de voordelen van Public Roam maar worstelen met de
+          kosten en het gebrek aan directe vraag van gebruikers. Er is een
+          duidelijke behoefte aan meer bewustwording over de veiligheidsrisico's
+          van openbare wifi-netwerken en de voordelen van Public Roam.
+        </h3>
+        <p>{data.commonFactorsAnalysis}</p>
       </div>
+      <h2 style={{ marginTop: 20 + "vh" }}>Verdieping per gebruikersoort:</h2>
       {data.sessions.map((session, sessionIndex) => (
         <div key={sessionIndex}>
+          <h1>{session.session_name}</h1>
+          <p>{session.researchQuestionAnswer}</p>
           {session.questions.map((question, questionIndex) => (
             <div key={questionIndex}>
               <div className="description">
-                <h2>{question.question.short}</h2>
-                <h3>{question.question.sub}</h3>
+                <h3>{question.question.short}</h3>
+                <h4>{question.question.sub}</h4>
+                <p>{question.summary}</p>
               </div>
               <div className="answer-grid">
-                {[...question.clusters]
-                  .sort((a, b) => a.inverseEvidenceMean - b.inverseEvidenceMean)
-                  .map((cluster, clusterIndex) =>
-                    cluster &&
-                    cluster.images &&
-                    cluster.images.length > 0 &&
-                    cluster.name ? (
+                {[...question.tables.flatMap((table) => table.answers)]
+                  .sort((a, b) => a.inverseEvidence - b.inverseEvidence)
+                  .map((answer, answerIndex) =>
+                    answer && answer.title ? (
                       <div
-                        key={`${clusterIndex}`}
+                        key={`${answerIndex}`}
                         className="tiny-card"
                         onClick={() =>
-                          handleClusterClick(
-                            question.question.short,
-                            cluster,
-                            sessionIndex,
-                            questionIndex
-                          )
+                          handleAnswerClick(question.question.short, answer)
                         }
+                        style={{ borderColor: valenceColors[answer.valence] }}
                       >
-                        <img src={cluster.images[0]} alt={cluster.title} />
-                        <h3>{cluster.name}</h3>
-                        {cluster.zScore < -1 ? (
-                          <div className="tag top">Top Answer</div>
-                        ) : cluster.zScore > 1 ? (
-                          <div className="tag fresh">Fresh perspective</div>
+                        <h3>{answer.title}</h3>
+                        <p>{answer.answer}</p>
+                        {answer.zScore < -1 ? (
+                          <div className="tag top">Top Antwoord</div>
+                        ) : answer.zScore > 1 ? (
+                          <div className="tag fresh">Frisse Blik</div>
                         ) : null}
                       </div>
                     ) : null
@@ -141,16 +124,15 @@ const App = () => {
           ))}
         </div>
       ))}
-      {selectedCluster && (
+      {selectedAnswer && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={() => setSelectedCluster(null)}>
+            <span className="close" onClick={() => setSelectedAnswer(null)}>
               &times;
             </span>
-            <ClusterCard
-              question={selectedCluster.question}
-              cluster={selectedCluster.cluster}
-              referencedAnswers={selectedCluster.referencedAnswers} // Pass the referenced answers as a prop
+            <AnswerCard
+              question={selectedAnswer.question}
+              answer={selectedAnswer.answer}
             />
           </div>
         </div>

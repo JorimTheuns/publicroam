@@ -5,21 +5,19 @@
   /* border-radius: 8px; */
   overflow: hidden; /* Ensures images and content do not spill out of the card's rounded corners */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds subtle shadow for depth */
-  margin: auto;
+  margin: 0 auto;
   background-color: white;
   /* add scroll snap to align to the top of the object */
   scroll-snap-align: start;
 }
 
 .tag {
-  position: absolute;
   padding: 4px;
   font-size: 14px;
-  border-bottom-right-radius: 8px;
+  border-radius: 8px;
   padding-left: 8px;
   padding-right: 8px;
-  margin: auto;
-  margin-bottom: 4px;
+  margin-top: 8px;
   width: fit-content;
 }
 
@@ -27,7 +25,6 @@
   border-radius: 20px;
   padding: 4px 8px;
   font-size: 14px;
-  margin: auto;
   margin-bottom: 12px;
   width: fit-content;
 }
